@@ -11,9 +11,8 @@ export interface PageContext<PageProps = EmptyObject, Params = EmptyObject> {
   pageProps: PageProps;
   params?: Params;
   history: BrowserHistory;
-  appRootElement: HTMLDivElement;
 }
 
 export type Page<PageProps = EmptyObject, Params = EmptyObject> = (
   pageContext: PageContext<PageProps, Params>
-) => void;
+) => string;
