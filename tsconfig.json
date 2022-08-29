@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "useDefineForClassFields": true,
+    "sourceMap": true,
+    "baseUrl": "./src",
+    "pretty": true,
+    "allowJs": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "lib": ["DOM", "ESNext"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "exactOptionalPropertyTypes": true,
+    "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "incremental": true
+  },
+  "include": ["./src", "./vite-env.d.ts", "src/types.d.ts"]
+}
