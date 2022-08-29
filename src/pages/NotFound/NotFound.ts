@@ -4,10 +4,10 @@ interface PageProps {
   message?: string;
 }
 
-const NotFound: Page<PageProps> = ({ appRootElement, pageProps }) => {
+const NotFound: Page<PageProps> = ({ pageProps }) => {
   const { message } = pageProps;
 
-  appRootElement.innerHTML = `
+  return `
     <h1>${message || "404 | Page Not Found"}</h1>
   `;
 };

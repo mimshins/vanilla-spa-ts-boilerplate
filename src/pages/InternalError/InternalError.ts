@@ -4,10 +4,10 @@ interface PageProps {
   message?: string;
 }
 
-const InternalError: Page<PageProps> = ({ appRootElement, pageProps }) => {
+const InternalError: Page<PageProps> = ({ pageProps }) => {
   const { message } = pageProps;
 
-  appRootElement.innerHTML = `
+  return `
     <h1>${message || "5xx | Internal Error"}</h1>
   `;
 };
