@@ -7,6 +7,7 @@ import {
   NotFoundPage
 } from "pages";
 import { createDynamicRoute, handleDynamicRoutes } from "utils";
+import "normalize.css";
 import "./style.css";
 
 const appRootElement = <HTMLDivElement | null>document.getElementById("app");
