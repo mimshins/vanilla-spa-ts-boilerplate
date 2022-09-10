@@ -1,15 +1,21 @@
-import type { Page } from "types";
+import Page from "Page";
 
 interface PageProps {
   message?: string;
 }
 
-const NotFound: Page<PageProps> = ({ pageProps }) => {
-  const { message } = pageProps;
+class NotFoundPage extends Page<PageProps> {
+  override onMount(): void {
+    return;
+  }
 
-  return `
-    <h1>${message || "404 | Page Not Found"}</h1>
-  `;
-};
+  override initialRender(): string {
+    const { message } = this.props;
 
-export default NotFound;
+    return `
+      <h1>${message || "404 | Page Not Found"}</h1>
+    `;
+  }
+}
+
+export default NotFoundPage;

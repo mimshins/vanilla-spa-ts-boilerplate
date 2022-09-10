@@ -1,15 +1,21 @@
-import type { Page } from "types";
+import Page from "Page";
 
 interface PageProps {
   message?: string;
 }
 
-const InternalError: Page<PageProps> = ({ pageProps }) => {
-  const { message } = pageProps;
+class InternalErrorPage extends Page<PageProps> {
+  override onMount(): void {
+    return;
+  }
 
-  return `
-    <h1>${message || "5xx | Internal Error"}</h1>
-  `;
-};
+  override initialRender(): string {
+    const { message } = this.props;
 
-export default InternalError;
+    return `
+      <h1>${message || "5xx | Internal Error"}</h1>
+    `;
+  }
+}
+
+export default InternalErrorPage;

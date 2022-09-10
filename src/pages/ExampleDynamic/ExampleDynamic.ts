@@ -1,18 +1,28 @@
 import { NotFoundError } from "errors";
-import type { EmptyObject, Page } from "types";
+import Page from "Page";
+import type { EmptyObject, PageContext } from "types";
 
 interface PageParams {
   id: string;
 }
 
-const ExampleDynamic: Page<EmptyObject, PageParams> = ({ params }) => {
-  const id = params?.id;
+class ExampleDynamicPage extends Page<EmptyObject, PageParams> {
+  constructor(ctx: PageContext<EmptyObject, PageParams>) {
+    super(ctx);
 
-  if (!id || id !== "123") throw new NotFoundError();
+    const id = this.params?.id;
+    if (!id || id !== "123") throw new NotFoundError();
+  }
 
-  return `
-    <h1>Dynamic Page</h1>
-  `;
-};
+  override onMount(): void {
+    return;
+  }
 
-export default ExampleDynamic;
+  override initialRender(): string {
+    return `
+      <h1>Dynamic Page</h1>
+    `;
+  }
+}
+
+export default ExampleDynamicPage;

@@ -1,4 +1,5 @@
 import { type BrowserHistory } from "history";
+import Page from "Page";
 
 export type ObjectKeys = string | number | symbol;
 
@@ -13,6 +14,7 @@ export interface PageContext<PageProps = EmptyObject, Params = EmptyObject> {
   history: BrowserHistory;
 }
 
-export type Page<PageProps = EmptyObject, Params = EmptyObject> = (
-  pageContext: PageContext<PageProps, Params>
-) => string;
+export type PageClassType<
+  PageProps = EmptyObject,
+  Params = EmptyObject
+> = typeof Page<PageProps, Params>;

@@ -1,14 +1,15 @@
-import type { Page } from "types";
-import { onPageMount } from "utils";
+import Page from "Page";
 
-const Home: Page = () => {
-  onPageMount(() => {
+class HomePage extends Page {
+  override onMount(): void {
     console.log(document.getElementById("title"));
-  });
+  }
 
-  return `
-    <h1 id="title">Home Page</h1>
-  `;
-};
+  override initialRender(): string {
+    return `
+      <h1 id="title">Home Page</h1>
+    `;
+  }
+}
 
-export default Home;
+export default HomePage;

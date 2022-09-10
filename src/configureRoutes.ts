@@ -1,19 +1,32 @@
 import { InternalError, NotFoundError } from "errors";
-import { type Location, type BrowserHistory } from "history";
+import { type BrowserHistory, type Location } from "history";
+import Page from "Page";
 import { match, type Path } from "path-to-regexp";
-import type { Page, PageContext } from "types";
+import type { PageClassType, PageContext } from "types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface Config {
   routes: {
     path: Path;
-    page: Page<any, any>;
+    page: PageClassType<any, any>;
     props?: PageContext<any, any>["pageProps"];
   }[];
-  notFoundPage: Page<any, any>;
-  errorPage: Page<any, any>;
+  notFoundPage: PageClassType<any, any>;
+  errorPage: PageClassType<any, any>;
 }
 /* eslint-enable @typescript-eslint/no-explicit-any */
+
+const onPageMount = (callback: () => void) => {
+  if (
+    document.readyState === "complete" ||
+    document.readyState === "interactive"
+  ) {
+    // call on next available tick
+    setTimeout(callback, 1);
+  } else {
+    document.addEventListener("DOMContentLoaded", () => callback());
+  }
+};
 
 const configureRoutes = (
   appRootElement: HTMLDivElement,
@@ -23,7 +36,7 @@ const configureRoutes = (
   const { errorPage, notFoundPage, routes } = config;
 
   const switchRoutes = (location: Location) => {
-    const pageContent: { __html: string | null } = { __html: null };
+    let page: Page | null = null;
 
     try {
       for (const route of routes) {
@@ -32,7 +45,7 @@ const configureRoutes = (
         const matched = matcher(location.pathname);
         if (!matched) continue;
 
-        pageContent.__html = route.page({
+        page = new route.page({
           history,
           pageProps: <unknown>route.props ?? {},
           params: matched.params
@@ -41,22 +54,23 @@ const configureRoutes = (
         break;
       }
 
-      if (pageContent.__html == null) throw new NotFoundError();
+      if (page == null) throw new NotFoundError();
     } catch (err) {
       if (err instanceof NotFoundError) {
-        pageContent.__html = notFoundPage({
+        page = new notFoundPage({
           history,
           pageProps: { message: err.message }
         });
       } else if (err instanceof InternalError) {
-        pageContent.__html = errorPage({
+        page = new errorPage({
           history,
           pageProps: { message: err.message }
         });
-      } else pageContent.__html = errorPage({ history, pageProps: {} });
+      } else page = new errorPage({ history, pageProps: {} });
     }
 
-    appRootElement.innerHTML = pageContent.__html;
+    onPageMount(page.onMount.bind(page));
+    appRootElement.innerHTML = page.initialRender();
   };
 
   // Listen for route changes
